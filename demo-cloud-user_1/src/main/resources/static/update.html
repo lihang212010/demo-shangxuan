@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="return" >
+<input type="button" value="主页"  onclick="window.location='http://47.100.13.76:8080/index.html'" /> 
+</div>
+<div><p>这里的修改是输入需要的学号，然后修改性别等其他属性，而平常，因为平时的修改是已经登录的状态，不需要输入学号重复修改在数据库是允许的所以重复提交依旧会成功</p></div>
+<div>学  号 :  <input type="text" id="numId"></div>
+<div>性 别 : 
+<input type="radio" name="sex" value="男" checked >男
+<input type="radio" name="sex" value="女" >女
+</div>
+<div>姓 名 :  <input type="text" id="name"></div>
+<div>专 业 :
+<input type="radio" name="major" value="物联网" checked >物联网
+<input type="radio" name="major" value="计算机信息技术" >计算机信息技术
+<input type="radio" name="major" value="网络安全" >网络安全
+</div>
+<div>
+ <button id="insert" onclick= "update('http://47.100.13.76:8080/update')">
+           提交
+</button></div>
+<p id="page">这是结果反馈哦</p>
+  <script type="text/javascript">	
+      function update(url){
+    	  var Id = document.getElementById("numId").value;
+    	  var name = document.getElementById("name").value;
+    	  var major = $("[name=major]:checked").val();
+    	  var sex = $("[name=sex]:checked").val();
+				$.ajax({
+				url:url,//地址
+				dataType:'text',//数据类型
+				data: {sex:sex, name:name,major:major,id:Id},
+				type:'PUT',//类型
+				timeout:2000,//超时
+				//请求成功
+				success:function(data,status){
+				//	Console.log(data);
+					document.getElementById("page").innerHTML=data; 		        					
+				},
+				//失败/超时
+				error:function(XMLHttpRequest,textStatus,errorThrown){
+					if(textStatus==='timeout'){
+						alert('請求超時');
+						setTimeout(function(){
+							alert('重新请求');
+						},2000);
+					}
+					//alert(errorThrown);
+				}
+			})
+		}
+      
+
+  </script> 
+
+
+
+
+
+
+
+
+
+</body>
+</html>

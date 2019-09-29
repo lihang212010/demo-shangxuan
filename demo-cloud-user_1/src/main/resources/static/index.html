@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+
+<style >
+		*{
+			margin: 0;
+			padding: 0;
+	
+		}
+.insert{
+height:20px;
+width:100%;
+}
+.insert>input{
+
+width:100%;
+border:0; 
+color:red
+}
+.delete{
+height:20px;
+width:100%;
+position:relative;
+top:10px;
+}
+.delete>input{
+
+width:100%;
+border:0; 
+color:red
+}
+.find{
+height:20px;
+width:100%;
+position:relative;
+top:20px;
+}
+.find>input{
+
+width:100%;
+border:0; 
+color:red
+}
+.update{
+height:20px;
+width:100%;
+position:relative;
+top:30px;
+}
+.update>input{
+
+width:100%;
+border:0; 
+color:red
+}
+</style>
+</head>
+<body>
+
+<div class="insert" >
+<input type="button" value="添加"  onclick="window.location='http://47.100.13.76:8080/insert.html'" /> 
+</div>
+<div class="delete">
+<input type="button" value="删除"  onclick="window.location='http://47.100.13.76:8080/delete.html'"/> 
+</div>
+<div class="find">
+<input type="button" value="查找"  onclick="window.location='http://47.100.13.76:8080/find.html'"/> 
+</div>
+<div class="update">
+<input type="button" value="修改"  onclick="window.location='http://47.100.13.76:8080/update.html'"/> 
+</div>
+
+
+</body>
+</html>

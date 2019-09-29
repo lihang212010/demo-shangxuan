@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+</head>
+<body>
+
+
+<div class="return" >
+<input type="button" value="主页"  onclick="window.location='http://47.100.13.76:8080/index.html'" /> 
+</div>
+<div>
+ <button id="findAll" onclick= "find('http://47.100.13.76:8080/all')" >
+            查看全部学生信息
+</button>其余选项是我在前端把每一页显示的数据设置为5，全部学生信息是在后端设置的</div>
+<div>
+ <button id="findboy" onclick= "find('http://47.100.13.76:8080/sex')" >
+            查看男生信息
+</button>女生类似，这里不展示</div>
+<div>
+ <button id="findmajor" onclick= "find('http://47.100.13.76:8080/major')" >
+            查看该专业人员情况
+</button>
+<input type="radio" name="major" value="物联网" checked >物联网
+<input type="radio" name="major" value="计算机信息技术" >计算机信息技术
+<input type="radio" name="major" value="网络安全" >网络安全
+</div>
+<div>
+ <button id="findid" onclick= "find('http://47.100.13.76:8080/users')" >
+            根据学号查看信息
+</button>
+这里只是为了测试后端，并没有设置输入框值为空的限制，但是空值搜索不到东西哦
+<input type="text" name="fname" id="numId" />
+</div>
+<div>
+ <button id="up" onclick= "up()" >
+           上一页
+</button>
+<button id="down" onclick= "down()" >
+            下一页
+</button>这里应该显示共有多少页的，我在后端设置过对应查找共多少页数，前端不表示了
+<p id="pageend">这里显示共多少页</p>
+<p id="page">页码1</p>
+</div>
+
+<div>
+  <table width="100%" style="margin-top:50px">
+  <tbody id="tbody1">
+  </tbody>
+</table>
+</div>
+        <script type="text/javascript">
+      var url1="";
+    		var index=1;
+    		var sum=1;
+    		var end=1;
+      function find(url){
+    	  this.url1=url;
+    	  this.index=1;
+    	  var Id = document.getElementById("numId").value;
+    	  var major = $("[name=major]:checked").val();
+    	  Sum(url+'Sum',major);
+				$.ajax({
+				url:url,//地址
+				dataType:'json',//数据类型
+				data: {sex:'男', pageIndex:1,pagesize:'5',major:major,id:Id},
+				type:'post',//类型
+				timeout:2000,//超时
+				//请求成功
+				success:function(data,status){
+					var obj=eval(data); 		
+					//console.log(obj.id);
+					 var tableData="<tr>"
+						 tableData+="<td>"+"学号"+"</td>"
+						 tableData+="<td>"+"姓名"+"</td>"
+						 tableData+="<td>"+"性别"+"</td>"
+						 tableData+="<td>"+"专业"+"</td>"
+						 tableData+="</tr>"
+						 //动态增加5个td,并且把data数组的五个值赋给每个td
+						 if(obj[0]!=null){
+						 for(var i=0;i<obj.length;i++){
+							 tableData+="</tr>"
+						  tableData+="<td>"+obj[i].id+"</td>"
+						  tableData+="<td>"+obj[i].name+"</td>"
+						  tableData+="<td>"+obj[i].sex+"</td>"
+						  tableData+="<td>"+obj[i].major+"</td>"
+						  tableData+="</tr>"
+						 }
+						 }
+						 else{
+							   tableData+="</tr>"
+								  tableData+="<td>"+obj.id+"</td>"
+								  tableData+="<td>"+obj.name+"</td>"
+								  tableData+="<td>"+obj.sex+"</td>"
+								  tableData+="<td>"+obj.major+"</td>"
+								  tableData+="</tr>"
+						 }
+							 $("#tbody1").html(tableData)
+				        
+					
+				},
+				//失败/超时
+				error:function(XMLHttpRequest,textStatus,errorThrown){
+					if(textStatus==='timeout'){
+						alert('請求超時');
+						setTimeout(function(){
+							alert('重新请求');
+						},2000);
+					}
+					//alert(errorThrown);
+				}
+			})
+		}
+      
+      function updown(url){
+    	  var Id = document.getElementById("numId").value;
+    	  var major = $("[name=major]:checked").val();
+				$.ajax({
+				url:url,//地址
+				dataType:'json',//数据类型
+				data: {sex:'男', pageIndex:index,pagesize:'5',major:major,id:Id},
+				type:'post',//类型
+				timeout:2000,//超时
+				//请求成功
+				success:function(data,status){
+					var obj=eval(data); 		
+					//console.log(obj.id);
+					 var tableData="<tr>"
+						 tableData+="<td>"+"学号"+"</td>"
+						 tableData+="<td>"+"姓名"+"</td>"
+						 tableData+="<td>"+"性别"+"</td>"
+						 tableData+="<td>"+"专业"+"</td>"
+						 tableData+="</tr>"
+						 //动态增加5个td,并且把data数组的五个值赋给每个td
+						 if(obj[0]!=null){
+						 for(var i=0;i<obj.length;i++){
+							 tableData+="</tr>"
+						  tableData+="<td>"+obj[i].id+"</td>"
+						  tableData+="<td>"+obj[i].name+"</td>"
+						  tableData+="<td>"+obj[i].sex+"</td>"
+						  tableData+="<td>"+obj[i].major+"</td>"
+						  tableData+="</tr>"
+						 }
+						 }
+						 else{
+							   tableData+="</tr>"
+								  tableData+="<td>"+obj.id+"</td>"
+								  tableData+="<td>"+obj.name+"</td>"
+								  tableData+="<td>"+obj.sex+"</td>"
+								  tableData+="<td>"+obj.major+"</td>"
+								  tableData+="</tr>"
+						 }
+							 $("#tbody1").html(tableData)							
+				},
+				//失败/超时
+				error:function(XMLHttpRequest,textStatus,errorThrown){
+					if(textStatus==='timeout'){
+						alert('請求超時');
+						setTimeout(function(){
+							alert('重新请求');
+						},2000);
+					}
+					//alert(errorThrown);
+				}
+			})
+		}
+      
+    function up(){
+    	index=index-1;
+    	document.getElementById("page").innerHTML="页码"+index;
+    	if(index<1){
+    	index=1;
+    	document.getElementById("page").innerHTML="已经到起点将重置为1";
+    	}
+    updown(url1);	
+    }
+    function down(){
+    	index=index+1;
+    	document.getElementById("page").innerHTML="页码"+index;
+    	if(index>end){
+    		index=end;
+    		document.getElementById("page").innerHTML="已经到终点将重置为最后一页最后一一页为："+end;
+    	}
+    	updown(url1);	
+    }
+
+    function Sum(url,major1){
+				$.ajax({
+				url:url,//地址
+				dataType:'json',//数据类型
+				data: {sex:'男',major:major1},
+				type:'post',//类型
+				timeout:2000,//超时
+				//请求成功
+				success:function(data,status){
+			 sum=data;
+	    end=Math.ceil(sum/5);
+				document.getElementById("pageend").innerHTML="总共有是"+sum+"记录"+"尾页为"+end;
+				},
+				//失败/超时
+				error:function(XMLHttpRequest,textStatus,errorThrown){
+					if(textStatus==='timeout'){
+						alert('請求超時');
+						setTimeout(function(){
+							alert('重新请求');
+						},2000);
+					}
+					//alert(errorThrown);
+				}
+			})
+		}
+    
+   </script>     
+
+
+
+
+
+
+</form>
+
+
+
+
+
+
+</body>
+</html>
